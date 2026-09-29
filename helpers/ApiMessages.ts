@@ -5,7 +5,8 @@ const ApiMessages = {
     },
     error: {
         userCreationFailed: "User creation failed",
-        userNotFound: "User not found"
+        userNotFound: "User not found",
+        internalError: "Internal server error"
     },
     validation: {
         emailRequired: "Email is required",
@@ -19,9 +20,8 @@ const ApiMessages = {
         invalidCredentials: "invalid Credentials!",
         invalidInput: "Invald Input!",
         emailEmpty: "Email cannot be empty",
-        invalidEmail: "Invalid email format",
-        passwordRequired: "Password is required",
         passwordEmpty: "Password cannot be empty",
+        invalidData: "Invalid data provided",
     }
 }
 
