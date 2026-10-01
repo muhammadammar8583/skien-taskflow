@@ -2,6 +2,7 @@ import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { TooltipProvider } from '@/components/ui/tooltip'
+import { StoreProvider } from '@/store/StoreProvider'
 import './globals.css'
 
 const inter = Inter({
@@ -29,7 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${inter.variable}`}>
       <body className="font-sans antialiased">
-        <TooltipProvider delayDuration={200}>{children}</TooltipProvider>
+        <StoreProvider>
+          <TooltipProvider delay={200}>{children}</TooltipProvider>
+        </StoreProvider>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

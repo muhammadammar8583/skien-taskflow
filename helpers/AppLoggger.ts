@@ -29,30 +29,5 @@ AppLogger.trace = (message: string, data?: any) => {
         console.trace(`[TRACE] ${message}`, data);
     }
 }
-AppLogger.fatal = (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.fatal(`[FATAL] ${message}`, data);
-    }
-}
-AppLogger.critical = (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.critical(`[CRITICAL] ${message}`, data);
-    }
-}
-AppLogger.emergency = (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.emergency(`[EMERGENCY] ${message}`, data);
-    }
-}
-AppLogger.alert = (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.alert(`[ALERT] ${message}`, data);
-    }
-}
-AppLogger.notice = (message: string, data?: any) => {
-    if (process.env.NODE_ENV === 'development') {
-        console.notice(`[NOTICE] ${message}`, data);
-    }
-}
 
 export default AppLogger;

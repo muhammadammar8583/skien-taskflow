@@ -1,20 +1,23 @@
 'use client'
 
 import { useState, type FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, LoaderCircle } from 'lucide-react'
 import AppConstants from '@/constants/AppConstants'
 import AppTexts from '@/constants/AppTexts'
 import AppRoutes from '@/helpers/AppRoutes'
+import { useAuthApis } from '@/hooks/useAuthApis'
 import { AuthButton, AuthCard, AuthDivider, AuthEmailInput, AuthHeader, AuthLayout, AuthLink, AuthMessage } from '@/components/auth/auth-layout'
 import { FormInput } from '@/components/ui/form-input'
 import { PasswordField } from '@/components/ui/password-field'
 
 export default function LoginPage() {
+  const router = useRouter()
+  const { handleLoginRequest, clearAuthError, loading, error } = useAuthApis()
   const [validationError, setValidationError] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
+  const isLoading = loading
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const form = event.currentTarget
     if (!form.checkValidity()) {
@@ -24,10 +27,11 @@ export default function LoginPage() {
     }
 
     setValidationError('')
-    setIsLoading(true)
-    await new Promise((resolve) => window.setTimeout(resolve, 650))
-    setIsLoading(false)
-    setSubmitted(true)
+    const formData = new FormData(form)
+    handleLoginRequest({
+      email: String(formData.get(AppConstants.authFields.email) ?? '').trim(),
+      password: String(formData.get(AppConstants.authFields.password) ?? ''),
+    }, () => router.replace(AppRoutes.pages.dashboard))
   }
 
   return (
@@ -39,7 +43,7 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           onChange={() => {
             setValidationError('')
-            setSubmitted(false)
+            clearAuthError()
           }}
           noValidate
           aria-busy={isLoading}
@@ -51,6 +55,7 @@ export default function LoginPage() {
             placeholder={AppTexts.fields.passwordPlaceholder}
             autoComplete="current-password"
           />
+          {error && <AuthMessage variant={AppConstants.authMessageVariants.error}>{error}</AuthMessage>}
           <div className="flex items-center justify-between gap-3">
             <FormInput
               id={AppConstants.authFields.remember}
@@ -66,7 +71,6 @@ export default function LoginPage() {
               : <>{AppTexts.auth.login.button}<ArrowRight className="size-4" /></>}
           </AuthButton>
           {validationError && <AuthMessage variant={AppConstants.authMessageVariants.error}>{validationError}</AuthMessage>}
-          {submitted && <AuthMessage>{AppTexts.actions.previewNotice}</AuthMessage>}
         </form>
         <div className="mt-4"><AuthDivider /></div>
         <div className="mt-6 border-t border-border pt-5 text-center text-[13px] text-muted-foreground">

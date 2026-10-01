@@ -25,6 +25,7 @@ const AppTexts = {
       description: 'Get started with your workspace',
       button: 'Create account',
       loading: 'Creating account...',
+      success: 'Account created. You can now sign in.',
     },
     forgotPassword: {
       title: 'Forgot your password?',
@@ -52,6 +53,10 @@ const AppTexts = {
     email: 'Email',
     emailPlaceholder: 'you@example.com',
     fullName: 'Full name',
+    firstName: 'First name',
+    lastName: 'Last name',
+    firstNamePlaceholder: 'John',
+    lastNamePlaceholder: 'Doe',
     fullNamePlaceholder: 'John Doe',
     password: 'Password',
     passwordPlaceholder: 'Enter your password',
