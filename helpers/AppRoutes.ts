@@ -11,15 +11,6 @@ const AppRoutes = {
         terms: "/terms",
         privacy: "/privacy",
     },
-    api: {
-        auth: {
-            login: "/api/auth/login",
-            register: "/api/auth/register",
-            forgotPassword: "/api/auth/forgot-password",
-            resetPassword: "/api/auth/reset-password",
-            changePassword: "/api/auth/change-password",
-        },
-    },
     legacyWorkspace: {
         projects: "/projects",
         kanbanBoard: "/kanban-board",

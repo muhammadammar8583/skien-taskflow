@@ -18,7 +18,7 @@ const persistedAuthReducer = persistReducer(
   {
     key: 'auth',
     storage,
-    whitelist: ['user', 'token'],
+    whitelist: ['user'],
   },
   AuthReducer,
 )
@@ -60,12 +60,6 @@ const logger = createLogger({
 
     return safeAction
   },
-  stateTransformer: (state) => ({
-    ...state,
-    auth: state.auth
-      ? { ...state.auth, token: state.auth.token ? '[REDACTED]' : null }
-      : state.auth,
-  }),
 })
 
 export const makeStore = () => configureStore({

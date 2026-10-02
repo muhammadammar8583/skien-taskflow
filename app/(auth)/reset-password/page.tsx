@@ -62,7 +62,7 @@ function ResetPasswordFlow() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout pageName={AppTexts.pageNames.resetPassword}>
       <AuthCard>
         <AuthHeader
           title={invalidToken

@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 import { ArrowRight, LoaderCircle } from 'lucide-react'
 import AppConstants from '@/constants/AppConstants'
 import AppTexts from '@/constants/AppTexts'
@@ -10,20 +11,36 @@ import { AuthButton, AuthCard, AuthEmailInput, AuthHeader, AuthLayout, AuthLink,
 import { PasswordRequirements } from '@/components/auth/password-requirements'
 import { FormInput } from '@/components/ui/form-input'
 import { PasswordField } from '@/components/ui/password-field'
+import AppLogger from '@/helpers/AppLoggger'
 
 export default function RegisterPage() {
+  const router = useRouter()
   const { handleRegisterRequest, clearAuthError, loading, error } = useAuthApis()
   const [password, setPassword] = useState('')
   const [validationError, setValidationError] = useState('')
   const [submitted, setSubmitted] = useState(false)
   const isLoading = loading
 
+  useEffect(() => {
+    if (!submitted) return
+
+    const redirectTimeout = window.setTimeout(() => {
+      router.replace(AppRoutes.pages.login)
+    }, 2000)
+
+    return () => window.clearTimeout(redirectTimeout)
+  }, [submitted, router])
+
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     const form = event.currentTarget
-    if (!form.checkValidity()) {
+    const termsCheckbox = form.querySelector<HTMLInputElement>(`[name="${AppConstants.authFields.terms}"]`)
+    const invalidField = Array.from(form.querySelectorAll<HTMLInputElement>(':invalid'))
+      .find((field) => field !== termsCheckbox)
+
+    if (invalidField) {
       setValidationError(AppTexts.validation.register)
-      form.querySelector<HTMLElement>(':invalid')?.focus()
+      invalidField.focus()
       return
     }
 
@@ -40,6 +57,11 @@ export default function RegisterPage() {
       form.querySelector<HTMLInputElement>(`[name="${AppConstants.authFields.confirmPassword}"]`)?.focus()
       return
     }
+    if (!termsCheckbox?.checked) {
+      setValidationError(AppTexts.validation.registerTerms)
+      termsCheckbox?.focus()
+      return
+    }
 
     setValidationError('')
     handleRegisterRequest({
@@ -48,11 +70,15 @@ export default function RegisterPage() {
       email: String(formData.get(AppConstants.authFields.email) ?? '').trim(),
       password: passwordValue,
       confirm_password: confirmPassword,
-    }, () => setSubmitted(true))
+    }, () => {
+      form.reset()
+      setPassword('')
+      setSubmitted(true)
+    })
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout pageName={AppTexts.pageNames.register}>
       <AuthCard>
         <AuthHeader title={AppTexts.auth.register.title} description={AppTexts.auth.register.description} />
         <form

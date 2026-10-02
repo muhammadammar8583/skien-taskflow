@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout pageName={AppTexts.pageNames.forgotPassword}>
       <AuthCard>
         <AuthHeader
           title={submitted ? AppTexts.auth.forgotPassword.successTitle : AppTexts.auth.forgotPassword.title}

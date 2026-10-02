@@ -1,6 +1,7 @@
 'use client'
 
 import { ChevronsUpDown, LogOut, Settings, User } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
@@ -11,16 +12,30 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { cn } from '@/lib/utils'
+import AppRoutes from '@/helpers/AppRoutes'
+import { useAppSelector } from '@/store/store'
+import { useAuthApis } from '@/hooks/useAuthApis'
 import { useSidebar } from './sidebar-context'
 
-const user = {
-  name: 'Jordan Rivera',
-  email: 'jordan@acme.inc',
-  avatar: '/user-avatar.png',
-}
+const userAvatar = '/user-avatar.png'
 
 export function UserMenu() {
+  const router = useRouter()
   const { collapsed } = useSidebar()
+  const { handleLogoutRequest } = useAuthApis()
+  const user = useAppSelector((state) => state.auth.user)
+  const userName = [user?.first_name, user?.last_name].filter(Boolean).join(' ')
+  const userEmail = user?.email ?? ''
+  const avatarFallback = userName.charAt(0) || userEmail.charAt(0) || '?'
+
+  async function handleLogout() {
+    try {
+      await handleLogoutRequest()
+      router.replace(AppRoutes.pages.login)
+    } catch (error) {
+      console.error('Logout failed:', error)
+    }
+  }
 
   return (
     <DropdownMenu>
@@ -35,35 +50,22 @@ export function UserMenu() {
         }
       >
         <Avatar className="size-7 rounded-md">
-          <AvatarImage src={user.avatar || '/placeholder.svg'} alt="" />
+          <AvatarImage src={userAvatar} alt="" />
           <AvatarFallback className="rounded-md bg-violet-500/20 text-xs text-violet-300">
-            {user.name.charAt(0)}
+            {avatarFallback}
           </AvatarFallback>
         </Avatar>
         {!collapsed && (
           <>
             <div className="min-w-0 flex-1">
-              <p className="truncate text-[13px] font-medium leading-tight">{user.name}</p>
-              <p className="truncate text-[11px] leading-tight text-muted-foreground">{user.email}</p>
+              <p className="truncate text-[13px] font-medium leading-tight">{userName || userEmail}</p>
+              <p className="truncate text-[11px] leading-tight text-muted-foreground">{userEmail}</p>
             </div>
             <ChevronsUpDown className="size-3.5 shrink-0 text-muted-foreground" />
           </>
         )}
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start" side="top" className="w-56" sideOffset={6}>
-        <div className="flex items-center gap-2 px-1.5 py-1.5">
-          <Avatar className="size-7 rounded-md">
-            <AvatarImage src={user.avatar || '/placeholder.svg'} alt="" />
-            <AvatarFallback className="rounded-md bg-violet-500/20 text-xs text-violet-300">
-              {user.name.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-          <div className="min-w-0">
-            <p className="truncate text-[13px] font-medium leading-tight">{user.name}</p>
-            <p className="truncate text-[11px] leading-tight text-muted-foreground">{user.email}</p>
-          </div>
-        </div>
-        <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <User className="size-4" />
@@ -76,7 +78,7 @@ export function UserMenu() {
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem variant="destructive">
+          <DropdownMenuItem variant="destructive" onClick={() => void handleLogout()}>
             <LogOut className="size-4" />
             Log out
           </DropdownMenuItem>

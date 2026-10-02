@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
 
   return (
-    <AuthLayout>
+    <AuthLayout pageName={AppTexts.pageNames.login}>
       <AuthCard>
         <AuthHeader title={AppTexts.auth.login.title} description={AppTexts.auth.login.description} />
         <form

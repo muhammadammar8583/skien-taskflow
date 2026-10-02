@@ -11,6 +11,7 @@ import {
   RegisterRequest,
   ResetPasswordRequest,
 } from '@/reducers/AuthReducer'
+import { AuthApiServices } from '@/services/AuthApiServices'
 import type {
   AuthOperationPayload,
   LoginCredentials,
@@ -37,7 +38,8 @@ export function useAuthApis() {
   const handleChangePasswordRequest = (payload: AuthOperationPayload, handleNext?: () => void) =>
     dispatch(ChangePasswordRequest(payload)).unwrap().then(() => handleNext?.()).catch(() => undefined)
 
-  const handleLogoutRequestLocal = () => {
+  const handleLogoutRequest = async () => {
+    await AuthApiServices.apiLogout()
     queryClient.clear()
     dispatch(logout())
   }
@@ -48,7 +50,7 @@ export function useAuthApis() {
     handleForgotPasswordRequest,
     handleResetPasswordRequest,
     handleChangePasswordRequest,
-    handleLogoutRequestLocal,
+    handleLogoutRequest,
     clearAuthError: () => dispatch(clearAuthError()),
     loading,
     error,

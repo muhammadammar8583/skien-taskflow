@@ -1,7 +1,8 @@
 const ApiMessages = {
     success: {
         userCreated: "User created successfully",
-        userLoggedIn: "User logged in succesfully"
+        userLoggedIn: "User logged in succesfully",
+        userLoggedOut: "User logged out successfully",
     },
     error: {
         userCreationFailed: "User creation failed",

@@ -1,6 +1,5 @@
 import ApiConstants from '@/constants/ApiConstants'
-import AppRoutes from '@/helpers/AppRoutes'
-import NetworkRequest, { getHeaders } from '@/helpers/NetworkRequest'
+import NetworkRequest from '@/helpers/NetworkRequest'
 
 export interface AuthUser {
   id: number
@@ -22,7 +21,6 @@ export interface RegisterPayload extends LoginCredentials {
 
 export interface AuthSession {
   user: AuthUser
-  token: string
 }
 
 export type AuthOperationPayload = Record<string, unknown>
@@ -34,23 +32,26 @@ export interface AuthApiResponse<T> {
 }
 
 async function apiLogin(credentials: LoginCredentials): Promise<AuthSession> {
-//   const response = await NetworkRequest.post<AuthApiResponse<AuthSession>>(
-//     AppRoutes.api.auth.login,
-//     credentials,
-//   )
-//   const session = response.data.data
+  const response = await NetworkRequest.post<AuthApiResponse<AuthSession>>(
+    ApiConstants.login,
+    credentials,
+  )
+  const session = response.data.data
 
-//   if (!session) {
-//     throw new Error(response.data.message || 'Authentication failed.')
-//   }
+  if (!session) {
+    throw new Error(response.data.message || 'Authentication failed.')
+  }
 
-//   return session
-return await NetworkRequest.post(`${ApiConstants.login}`, credentials, getHeaders(undefined, {}));
+  return session
+}
+
+async function apiLogout(): Promise<void> {
+  await NetworkRequest.post(ApiConstants.logout)
 }
 
 async function apiRegister(payload: RegisterPayload): Promise<AuthUser> {
   const response = await NetworkRequest.post<AuthApiResponse<AuthUser>>(
-    AppRoutes.api.auth.register,
+    ApiConstants.register,
     payload,
   )
   const user = response.data.data
@@ -64,7 +65,7 @@ async function apiRegister(payload: RegisterPayload): Promise<AuthUser> {
 
 async function apiForgotPassword(payload: { email: string }) {
   const response = await NetworkRequest.post<AuthApiResponse<unknown>>(
-    AppRoutes.api.auth.forgotPassword,
+    ApiConstants.forgotPassword,
     payload,
   )
   return response.data
@@ -72,7 +73,7 @@ async function apiForgotPassword(payload: { email: string }) {
 
 async function apiResetPassword(payload: AuthOperationPayload) {
   const response = await NetworkRequest.post<AuthApiResponse<unknown>>(
-    AppRoutes.api.auth.resetPassword,
+    ApiConstants.resetPassword,
     payload,
   )
   return response.data
@@ -80,7 +81,7 @@ async function apiResetPassword(payload: AuthOperationPayload) {
 
 async function apiChangePassword(payload: AuthOperationPayload) {
   const response = await NetworkRequest.post<AuthApiResponse<unknown>>(
-    AppRoutes.api.auth.changePassword,
+    ApiConstants.changePassword,
     payload,
   )
   return response.data
@@ -88,6 +89,7 @@ async function apiChangePassword(payload: AuthOperationPayload) {
 
 export const AuthApiServices = {
   apiLogin,
+  apiLogout,
   apiRegister,
   apiForgotPassword,
   apiResetPassword,

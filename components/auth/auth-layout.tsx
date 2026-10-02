@@ -2,12 +2,11 @@ import Link from 'next/link'
 import { PanelsTopLeft, Mail } from 'lucide-react'
 import AppConstants from '@/constants/AppConstants'
 import AppTexts from '@/constants/AppTexts'
-import AppRoutes from '@/helpers/AppRoutes'
 import { FormInput } from '@/components/ui/form-input'
 
 const primaryActionClassName = 'flex h-10 w-full items-center justify-center gap-2 rounded-md bg-violet-500 px-4 text-sm font-medium text-white transition-colors hover:bg-violet-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-300 active:translate-y-px disabled:pointer-events-none disabled:opacity-60'
 
-export function AuthLayout({ children }: { children: React.ReactNode }) {
+export function AuthLayout({ children, pageName }: { children: React.ReactNode; pageName: string }) {
   return (
     <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-background px-4 py-10 text-foreground sm:px-6">
       <div
@@ -15,17 +14,15 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,oklch(1_0_0_/_2%)_1px,transparent_1px),linear-gradient(to_bottom,oklch(1_0_0_/_2%)_1px,transparent_1px)] bg-[size:48px_48px] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]"
       />
       <div className="relative z-10 w-full max-w-[440px]">
-        <Link href={AppRoutes.pages.dashboard} className="mx-auto mb-8 flex w-fit items-center gap-2.5 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
+        <div className="mx-auto mb-8 flex w-fit items-center gap-2.5">
           <span className="flex size-8 items-center justify-center rounded-md border border-violet-400/20 bg-violet-500/10 text-violet-300">
             <PanelsTopLeft className="size-4" strokeWidth={2.2} />
           </span>
-          <span className="text-[15px] font-semibold tracking-tight">{AppTexts.brand.productName}<span className="text-muted-foreground">{AppTexts.brand.companySuffix}</span></span>
-        </Link>
+          <span className="text-[15px] font-semibold tracking-tight">{pageName}</span>
+        </div>
         {children}
         <footer className="mt-6 text-center text-xs text-muted-foreground">
           <span>{AppTexts.brand.copyright}</span>
-          <span className="mx-2 text-border">{AppTexts.brand.footerSeparator}</span>
-          <Link href={AppRoutes.pages.dashboard} className="transition-colors hover:text-foreground">{AppTexts.brand.backToWorkspace}</Link>
         </footer>
       </div>
     </main>

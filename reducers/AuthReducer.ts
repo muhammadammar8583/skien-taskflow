@@ -12,14 +12,12 @@ import {
 
 interface AuthState {
   user: AuthUser | null
-  token: string | null
   loading: boolean
   error: string | null
 }
 
 const initialState: AuthState = {
   user: null,
-  token: null,
   loading: false,
   error: null,
 }
@@ -99,7 +97,6 @@ const AuthReducer = createSlice({
     builder
       .addCase(LoginRequest.fulfilled, (state, action) => {
         state.user = action.payload.user
-        state.token = action.payload.token
       })
       .addMatcher(
         isAnyOf(

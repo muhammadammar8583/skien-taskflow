@@ -6,6 +6,12 @@ const AppTexts = {
     forgotPassword: 'Forgot password | Acme Inc',
     resetPassword: 'Create a new password | Acme Inc',
   },
+  pageNames: {
+    login: 'Login',
+    register: 'Register',
+    forgotPassword: 'Forgot Password',
+    resetPassword: 'Reset Password',
+  },
   brand: {
     productName: 'Acme',
     companySuffix: ' Inc',
@@ -88,7 +94,8 @@ const AppTexts = {
   },
   validation: {
     login: 'Enter a valid email address and password to continue.',
-    register: 'Complete the required fields with a valid email and accept the terms.',
+    register: 'Complete all required fields and enter a valid email address.',
+    registerTerms: 'Please accept the Terms of Service and Privacy Policy to continue.',
     forgotPassword: 'Enter a valid email address to continue.',
     resetPassword: 'Enter a new password and confirm it to continue.',
     registerPasswordRequirements: 'Choose a password that meets all the listed requirements.',

@@ -59,10 +59,18 @@ export async function POST(request: NextRequest) {
 
         const LoginResponse = {
             user: userWithoutPassword,
-            token: token
         };
 
-        return ApiResponse(200, ApiMessages.success.userLoggedIn, LoginResponse);
+        const response = ApiResponse(200, ApiMessages.success.userLoggedIn, LoginResponse);
+        response.cookies.set('auth-token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 60 * 60 * 24,
+        });
+
+        return response;
     } catch (error) {
         AppLogger('Error during login:', error);
         return ApiResponse(500, error instanceof Error ? error.message : ApiMessages.error.internalError, null);
