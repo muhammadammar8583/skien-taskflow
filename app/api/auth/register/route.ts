@@ -1,6 +1,6 @@
 import { NextRequest } from "next/server";
 import bcrypt from "bcrypt";
-import * as z from "zod";
+import * as z from "zod/v3";
 import { prisma } from "@/lib/prisma";
 import ApiMessages from "@/helpers/ApiMessages";
 import ApiResponse from "@/helpers/ApiResponse";
@@ -10,20 +10,20 @@ const RegisterSchema = z
   .object({
     first_name: z
       .string({ required_error: "First name is required" })
+      .trim()
       .min(1, "First name cannot be empty")
-      .max(50, "First name is too long")
-      .trim(),
+      .max(50, "First name is too long"),
     last_name: z
       .string({ required_error: "Last name is required" })
+      .trim()
       .min(1, "Last name cannot be empty")
-      .max(50, "Last name is too long")
-      .trim(),
+      .max(50, "Last name is too long"),
     email: z
       .string({ required_error: "Email is required" })
-      .min(1, "Email cannot be empty")
-      .email("Invalid email format")
       .trim()
-      .toLowerCase(),
+      .toLowerCase()
+      .min(1, "Email cannot be empty")
+      .email("Invalid email format"),
     password: z
       .string({ required_error: "Password is required" })
       .min(8, "Password must be at least 8 characters long")
@@ -42,8 +42,16 @@ const RegisterSchema = z
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    AppLogger("Register body is:", body);
+    let body: unknown;
+    try {
+      body = await request.json();
+    } catch {
+      return ApiResponse(
+        400,
+        ApiMessages.validation.invalidData || "Validation failed",
+        null,
+      );
+    }
 
     // 1. Zod Safe Parsing
     const validation = RegisterSchema.safeParse(body);
@@ -96,7 +104,7 @@ export async function POST(request: NextRequest) {
     AppLogger("Error during registration:", error);
     return ApiResponse(
       500,
-      error instanceof Error ? error.message : ApiMessages.error?.internalError || "Internal Server Error",
+      ApiMessages.error?.internalError || "Internal Server Error",
       null
     );
   }

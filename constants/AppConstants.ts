@@ -26,6 +26,10 @@ const AppConstants = {
   resetLinkStates: {
     expired: 'expired',
   },
+  passwordResetSessionKeys: {
+    email: 'password-reset-email',
+    token: 'password-reset-token',
+  },
 } as const
 
 export default AppConstants

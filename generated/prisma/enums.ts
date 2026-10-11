@@ -9,7 +9,8 @@
 * 🟢 You can import this file directly.
 */
 
+export const PasswordResetPurpose = {
+  PASSWORD_RESET: 'PASSWORD_RESET'
+} as const
 
-
-// This file is empty because there are no enums in the schema.
-export {}
+export type PasswordResetPurpose = (typeof PasswordResetPurpose)[keyof typeof PasswordResetPurpose]

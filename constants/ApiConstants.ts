@@ -4,6 +4,7 @@ const ApiConstants  = {
     login: '/auth/login',
     logout: '/auth/logout',
     forgotPassword: '/auth/forgot-password',
+    verifyOtp: '/auth/verify-otp',
     resetPassword: '/auth/reset-password',
     changePassword: '/auth/change-password',
 }

@@ -4,12 +4,14 @@ const AppTexts = {
     login: 'Sign in | Acme Inc',
     register: 'Create account | Acme Inc',
     forgotPassword: 'Forgot password | Acme Inc',
+    verifyOtp: 'Verify your email | Acme Inc',
     resetPassword: 'Create a new password | Acme Inc',
   },
   pageNames: {
     login: 'Login',
     register: 'Register',
     forgotPassword: 'Forgot Password',
+    verifyOtp: 'Verify Code',
     resetPassword: 'Reset Password',
   },
   brand: {
@@ -35,13 +37,19 @@ const AppTexts = {
     },
     forgotPassword: {
       title: 'Forgot your password?',
-      description: "Enter your email address and we'll send you a link to reset your password.",
+      description: "Enter your email address and we'll send you a code to reset your password.",
       button: 'Send reset link',
       loading: 'Sending reset link...',
       successTitle: 'Check your email',
       successDescription: "If an account exists for this email, we've sent instructions to reset your password.",
       successAction: 'Back to sign in',
       footerPrompt: 'Remember your password?',
+      otpTitle: 'Enter your verification code',
+      otpDescription: 'Enter the 6-digit code we sent to your email address.',
+      otpButton: 'Verify code',
+      otpLoading: 'Verifying code...',
+      otpChangeEmail: 'Use a different email',
+      otpResentNotice: 'If an account exists, a new code has been sent.',
     },
     resetPassword: {
       title: 'Create a new password',
@@ -85,6 +93,7 @@ const AppTexts = {
       uppercase: 'One uppercase letter',
       lowercase: 'One lowercase letter',
       number: 'One number',
+      special: 'One special character',
     },
     strength: {
       strong: 'Strong',
@@ -100,7 +109,7 @@ const AppTexts = {
     resetPassword: 'Enter a new password and confirm it to continue.',
     registerPasswordRequirements: 'Choose a password that meets all the listed requirements.',
     resetPasswordMinLength: 'Your password must be at least 8 characters long.',
-    resetPasswordComplexity: 'Include at least one uppercase letter, one lowercase letter, and one number.',
+    resetPasswordComplexity: 'Include an uppercase letter, a lowercase letter, a number, and a special character.',
     passwordsMismatch: 'Your passwords do not match.',
   },
   terms: {

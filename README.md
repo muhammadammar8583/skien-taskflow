@@ -72,3 +72,48 @@ Per-project issue numbering with Prisma transactions
 MIT — see LICENSE
 
 Built by Muhammad Ammar
+
+## Password reset API
+
+Configure `OTP_HMAC_SECRET` with at least 32 random characters, SMTP credentials,
+and `JWT_SECRET` in the server environment. Set both Upstash Redis variables in
+production; local development falls back to an in-memory rate limiter.
+`OTP_HMAC_SECRET` and `JWT_SECRET` must be different secrets.
+
+Apply the Prisma schema change with:
+
+```sh
+yarn prisma migrate dev
+yarn prisma generate
+```
+
+The migration adds `PasswordResetOtp` rows and a per-user `authVersion` used to
+invalidate existing login JWTs after a password change. Expired OTP rows and
+expired reset tokens should be removed by a scheduled worker calling
+`cleanupExpiredPasswordResetOtps()` from `services/password-reset.service.ts`
+at least hourly. Do not expose that cleanup operation as an unauthenticated
+public endpoint.
+
+Request an OTP (the response is the same for known and unknown addresses):
+
+```sh
+curl -X POST http://localhost:3000/api/auth/forgot-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"person@example.com"}'
+```
+
+Verify the six-digit code:
+
+```sh
+curl -X POST http://localhost:3000/api/auth/verify-otp \
+  -H "Content-Type: application/json" \
+  -d '{"email":"person@example.com","otp":"012345"}'
+```
+
+Use the returned `data.resetToken` once to change the password:
+
+```sh
+curl -X POST http://localhost:3000/api/auth/reset-password \
+  -H "Content-Type: application/json" \
+  -d '{"email":"person@example.com","resetToken":"RESET_TOKEN_FROM_VERIFY","newPassword":"Stronger!Password2026","confirmPassword":"Stronger!Password2026"}'
+```
