@@ -393,11 +393,6 @@ export type UserScalarRelationFilter = {
   isNot?: Prisma.UserWhereInput
 }
 
-export type UserScalarRelationFilter = {
-  is?: Prisma.UserWhereInput
-  isNot?: Prisma.UserWhereInput
-}
-
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }

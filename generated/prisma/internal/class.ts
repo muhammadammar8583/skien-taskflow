@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.10.0",
-  "engineVersion": "0edf323efd1d98336f3f0a68684b56f689b900d3",
+  "clientVersion": "7.10.1",
+  "engineVersion": "d1b3f377ca835d73fd50954a5e22128b9ebdd6b8",
   "activeProvider": "mysql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Get a free hosted Postgres database in seconds: `npx create-db`\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\nmodel User {\n  id                Int                @id @default(autoincrement())\n  first_name        String\n  last_name         String\n  email             String             @unique\n  password          String\n  authVersion       Int                @default(0)\n  passwordResetOtps PasswordResetOtp[]\n}\n\nmodel PasswordResetOtp {\n  id                  Int                  @id @default(autoincrement())\n  userId              Int\n  user                User                 @relation(fields: [userId], references: [id], onDelete: Cascade)\n  otpHash             String               @db.Char(64)\n  purpose             PasswordResetPurpose\n  expiresAt           DateTime\n  attempts            Int                  @default(0)\n  verifiedAt          DateTime?\n  usedAt              DateTime?\n  resetTokenHash      String?              @db.Char(64)\n  resetTokenExpiresAt DateTime?\n  createdAt           DateTime             @default(now())\n\n  @@index([userId])\n  @@index([expiresAt])\n  @@index([userId, purpose, createdAt])\n}\n\nenum PasswordResetPurpose {\n  PASSWORD_RESET\n}\n\ndatasource db {\n  provider = \"mysql\"\n}\n",
   "runtimeDataModel": {
