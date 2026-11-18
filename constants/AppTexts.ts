@@ -5,12 +5,14 @@ const AppTexts = {
     register: 'Create account | Acme Inc',
     forgotPassword: 'Forgot password | Acme Inc',
     resetPassword: 'Create a new password | Acme Inc',
+    verifyOtp: 'Verify code | Acme Inc',
   },
   pageNames: {
     login: 'Login',
     register: 'Register',
     forgotPassword: 'Forgot Password',
     resetPassword: 'Reset Password',
+    verifyOtp: 'Verify Code',
   },
   brand: {
     productName: 'Acme',
@@ -53,6 +55,14 @@ const AppTexts = {
       expiredTitle: 'Reset link expired',
       expiredDescription: 'The password reset link is no longer valid. Please request a new one.',
       expiredAction: 'Request a new reset link',
+    },
+    verifyOtp: {
+      title: 'Verify your email',
+      description: 'Enter the 6-digit verification code sent to your email address.',
+      codeLabel: '6-digit verification code',
+      digitLabel: 'Verification code digit',
+      button: 'Verify code',
+      backToSignIn: 'Back to sign in',
     },
   },
   fields: {
@@ -98,6 +108,7 @@ const AppTexts = {
     registerTerms: 'Please accept the Terms of Service and Privacy Policy to continue.',
     forgotPassword: 'Enter a valid email address to continue.',
     resetPassword: 'Enter a new password and confirm it to continue.',
+    verifyOtp: 'Enter all 6 digits to continue.',
     registerPasswordRequirements: 'Choose a password that meets all the listed requirements.',
     resetPasswordMinLength: 'Your password must be at least 8 characters long.',
     resetPasswordComplexity: 'Include at least one uppercase letter, one lowercase letter, and one number.',

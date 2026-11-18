@@ -51,7 +51,8 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User'
+  User: 'User',
+  PasswordResetOtp: 'PasswordResetOtp'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -81,6 +82,18 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+export const PasswordResetOtpScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  otpHash: 'otpHash',
+  expiresAt: 'expiresAt',
+  attempts: 'attempts',
+  createdAt: 'createdAt'
+} as const
+
+export type PasswordResetOtpScalarFieldEnum = (typeof PasswordResetOtpScalarFieldEnum)[keyof typeof PasswordResetOtpScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -97,4 +110,11 @@ export const UserOrderByRelevanceFieldEnum = {
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
+
+
+export const PasswordResetOtpOrderByRelevanceFieldEnum = {
+  otpHash: 'otpHash'
+} as const
+
+export type PasswordResetOtpOrderByRelevanceFieldEnum = (typeof PasswordResetOtpOrderByRelevanceFieldEnum)[keyof typeof PasswordResetOtpOrderByRelevanceFieldEnum]
 

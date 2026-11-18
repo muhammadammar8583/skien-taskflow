@@ -3,6 +3,7 @@ const ApiMessages = {
         userCreated: "User created successfully",
         userLoggedIn: "User logged in succesfully",
         userLoggedOut: "User logged out successfully",
+        otpSent: "OTP sent successfully",
     },
     error: {
         userCreationFailed: "User creation failed",

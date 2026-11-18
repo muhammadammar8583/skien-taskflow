@@ -6,6 +6,7 @@ const AppRoutes = {
         register: "/register",
         forgotPassword: "/forgot-password",
         resetPassword: "/reset-password",
+        verifyOtp: "/verify-otp",
     },
     links: {
         terms: "/terms",

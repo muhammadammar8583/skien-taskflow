@@ -52,9 +52,6 @@ export async function POST(request: NextRequest) {
             .setIssuedAt()
             .setProtectedHeader({ alg })
             .sign(secret);
-
-        AppLogger('Token generated for user:', user.email);
-
         const { password: _, ...userWithoutPassword } = user;
 
         const LoginResponse = {

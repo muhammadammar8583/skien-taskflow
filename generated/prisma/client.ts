@@ -46,3 +46,8 @@ export { Prisma }
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model PasswordResetOtp
+ * 
+ */
+export type PasswordResetOtp = Prisma.PasswordResetOtpModel
