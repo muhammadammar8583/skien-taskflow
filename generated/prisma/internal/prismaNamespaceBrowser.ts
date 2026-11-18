@@ -76,7 +76,8 @@ export const UserScalarFieldEnum = {
   first_name: 'first_name',
   last_name: 'last_name',
   email: 'email',
-  password: 'password'
+  password: 'password',
+  authVersion: 'authVersion'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -86,8 +87,13 @@ export const PasswordResetOtpScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
   otpHash: 'otpHash',
+  purpose: 'purpose',
   expiresAt: 'expiresAt',
   attempts: 'attempts',
+  verifiedAt: 'verifiedAt',
+  usedAt: 'usedAt',
+  resetTokenHash: 'resetTokenHash',
+  resetTokenExpiresAt: 'resetTokenExpiresAt',
   createdAt: 'createdAt'
 } as const
 
@@ -112,8 +118,17 @@ export const UserOrderByRelevanceFieldEnum = {
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
 
 
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
 export const PasswordResetOtpOrderByRelevanceFieldEnum = {
-  otpHash: 'otpHash'
+  otpHash: 'otpHash',
+  resetTokenHash: 'resetTokenHash'
 } as const
 
 export type PasswordResetOtpOrderByRelevanceFieldEnum = (typeof PasswordResetOtpOrderByRelevanceFieldEnum)[keyof typeof PasswordResetOtpOrderByRelevanceFieldEnum]

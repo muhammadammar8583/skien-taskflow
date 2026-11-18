@@ -26,7 +26,8 @@ export interface AuthSession {
 export type AuthOperationPayload = Record<string, unknown>
 
 export interface AuthApiResponse<T> {
-  status: 'success' | 'error'
+  status?: 'success' | 'error'
+  success?: boolean
   message: string
   data: T | null
 }
@@ -71,6 +72,19 @@ async function apiForgotPassword(payload: { email: string }) {
   return response.data
 }
 
+async function apiVerifyOtp(payload: { email: string; otp: string }): Promise<string> {
+  const response = await NetworkRequest.post<
+    AuthApiResponse<{ resetToken: string }>
+  >(ApiConstants.verifyOtp, payload)
+  const resetToken = response.data.data?.resetToken
+
+  if (!resetToken) {
+    throw new Error(response.data.message || 'The code could not be verified.')
+  }
+
+  return resetToken
+}
+
 async function apiResetPassword(payload: AuthOperationPayload) {
   const response = await NetworkRequest.post<AuthApiResponse<unknown>>(
     ApiConstants.resetPassword,
@@ -92,6 +106,7 @@ export const AuthApiServices = {
   apiLogout,
   apiRegister,
   apiForgotPassword,
+  apiVerifyOtp,
   apiResetPassword,
   apiChangePassword,
 }

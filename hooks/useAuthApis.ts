@@ -32,8 +32,12 @@ export function useAuthApis() {
   const handleForgotPasswordRequest = (payload: { email: string }, handleNext?: () => void) =>
     dispatch(ForgotPasswordRequest(payload)).unwrap().then(() => handleNext?.()).catch(() => undefined)
 
+  const handleVerifyOtpRequest = async (
+    payload: { email: string; otp: string },
+  ) => AuthApiServices.apiVerifyOtp(payload)
+
   const handleResetPasswordRequest = (payload: AuthOperationPayload, handleNext?: () => void) =>
-    dispatch(ResetPasswordRequest(payload)).unwrap().then(() => handleNext?.()).catch(() => undefined)
+    dispatch(ResetPasswordRequest(payload)).unwrap().then(() => handleNext?.())
 
   const handleChangePasswordRequest = (payload: AuthOperationPayload, handleNext?: () => void) =>
     dispatch(ChangePasswordRequest(payload)).unwrap().then(() => handleNext?.()).catch(() => undefined)
@@ -48,6 +52,7 @@ export function useAuthApis() {
     handleLoginRequest,
     handleRegisterRequest,
     handleForgotPasswordRequest,
+    handleVerifyOtpRequest,
     handleResetPasswordRequest,
     handleChangePasswordRequest,
     handleLogoutRequest,

@@ -6,6 +6,7 @@ const requirements = [
   { label: AppTexts.password.requirements.uppercase, test: (value: string) => /[A-Z]/.test(value) },
   { label: AppTexts.password.requirements.lowercase, test: (value: string) => /[a-z]/.test(value) },
   { label: AppTexts.password.requirements.number, test: (value: string) => /\d/.test(value) },
+  { label: AppTexts.password.requirements.special, test: (value: string) => /[^A-Za-z0-9]/.test(value) },
 ]
 
 export function PasswordRequirements({ password }: { password: string }) {

@@ -9,24 +9,36 @@ generator client {
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  first_name String
-  last_name String
-  email String @unique
-  password String
-  passwordResetOtp PasswordResetOtp?
+  id                 Int                @id @default(autoincrement())
+  first_name         String
+  last_name          String
+  email              String             @unique
+  password           String
+  authVersion        Int                @default(0)
+  passwordResetOtps  PasswordResetOtp[]
 }
 
 model PasswordResetOtp {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @unique
-  otpHash   String   @db.Char(64)
-  expiresAt DateTime
-  attempts  Int      @default(0)
-  createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                  Int                 @id @default(autoincrement())
+  userId              Int
+  user                User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  otpHash             String              @db.Char(64)
+  purpose             PasswordResetPurpose
+  expiresAt           DateTime
+  attempts            Int                 @default(0)
+  verifiedAt          DateTime?
+  usedAt              DateTime?
+  resetTokenHash      String?             @db.Char(64)
+  resetTokenExpiresAt DateTime?
+  createdAt           DateTime            @default(now())
 
+  @@index([userId])
   @@index([expiresAt])
+  @@index([userId, purpose, createdAt])
+}
+
+enum PasswordResetPurpose {
+  PASSWORD_RESET
 }
 
 datasource db {

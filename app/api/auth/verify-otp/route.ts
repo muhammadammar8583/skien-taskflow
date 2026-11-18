@@ -1,25 +1,25 @@
 import { NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
-import ApiMessages from "@/helpers/ApiMessages";
 import ApiResponse from "@/helpers/ApiResponse";
-import AppLogger from "@/helpers/AppLoggger";
+import { getClientIp, handleApiError } from "@/lib/api-response";
+import { validateJsonRequest } from "@/lib/validate-request";
+import { verifyOtpSchema } from "@/lib/validators/auth";
+import { verifyPasswordResetOtp } from "@/services/password-reset.service";
 
-export async function POST(request: Request) {
-  // Implementation for verifying OTP
-  const body = await request.json();
-  const { email, otp } = body;
-  if (!email || !otp) {
-    return ApiResponse(400, 'Email and otp are required', null)
+export async function POST(request: NextRequest) {
+  try {
+    const validation = await validateJsonRequest(request, verifyOtpSchema);
+    if (!validation.success) {
+      return validation.response;
+    }
+
+    const resetToken = await verifyPasswordResetOtp(
+      validation.data.email,
+      validation.data.otp,
+      getClientIp(request),
+    );
+
+    return ApiResponse(200, "The code was verified.", { resetToken });
+  } catch (error) {
+    return handleApiError(error);
   }
-  const user = await prisma.user.findUnique({
-    where: { email },
-    select: { id: true, email: true },
-  });
-
-   if (!user) {
-    return ApiResponse(404, ApiMessages.error.userNotFound, null);
-   }
-   prisma.passwordResetOtp.findUnique({
-    where: {  }
-   }) 
 }
